@@ -1,14 +1,19 @@
 <template>
     <div class="font-sans mx-auto my-4 pb-4 w-3/4">
         <div class="flex justify-between border-b-blue border-b p-2">
-                <p class=" text-sm text-blue" >Сделки</p>
+                <router-link to="/client" class=" text-sm text-black" >Клиенты</router-link>
+                <router-link to="/agent" class=" text-sm text-black" >Риэлторы</router-link>
+                <router-link to="/object" class=" text-sm text-black" >Объекты недвижимости</router-link>
+                <router-link to="/need" class=" text-sm text-black" >Потребности</router-link>
+                <router-link to="/offer" class=" text-sm text-black" >Предложения</router-link>
+                <router-link to="/deal" class=" text-sm text-blue" >Сделки</router-link>
         </div>
         <div class="flex justify-between gap-2  w-10/12 my-4 mx-auto">
             <fieldset class="flex justify-start gap-2">
                 <p>Поиск</p>
                 <input class="w-9/12 border rounded-md" type="text">  
             </fieldset>
-            <router-link to="/addclient" class="block  text-s"><el-button  class="border-orange" type='primary' style="width: 200px" >Добавить</el-button></router-link>
+            <router-link to="/adddeal" class="block  text-s"><el-button  class="border-orange" type='primary' style="width: 200px" >Добавить</el-button></router-link>
         </div>
         <table class=" h-96 mx-auto w-10/12 border my-4 border-gray-600 ">
                 <thead> <!-- Заголовок таблицы -->
@@ -29,8 +34,9 @@
                 </tbody>
             </table>
             <div class="flex justify-start gap-5 mx-auto my-4 w-10/12 " >
-                <router-link to="/editclient"><el-button  class="border-orange" style="width: 200px" >Редактировать</el-button></router-link>
+                <router-link to="/updatedeal"><el-button  class="border-orange" style="width: 200px" >Редактировать</el-button></router-link>
                 <el-button @click="top" class="border-orange "  type="danger" style="width: 200px">Удалить</el-button>
+                <el-button @click="top" class="border-orange "  type="primary" style="width: 200px">Рассчитать</el-button>
             </div>
     </div>
 </template>

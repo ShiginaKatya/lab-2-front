@@ -1,7 +1,12 @@
 <template>
     <div class="font-sans mx-auto my-4 pb-4 w-3/4">
         <div class="flex justify-between border-b-blue border-b p-2">
-                <p class=" text-sm text-blue" >Обьекты недвижимости</p>
+                <router-link to="/client" class=" text-sm text-black" >Клиенты</router-link>
+                <router-link to="/agent" class=" text-sm text-black" >Риэлторы</router-link>
+                <router-link to="/object" class=" text-sm text-blue" >Объекты недвижимости</router-link>
+                <router-link to="/need" class=" text-sm text-black" >Потребности</router-link>
+                <router-link to="/offer" class=" text-sm text-black" >Предложения</router-link>
+                <router-link to="/deal" class=" text-sm text-black" >Сделки</router-link>
         </div>
         <div class="flex justify-between gap-2  w-10/12 my-4 mx-auto">
             <fieldset class="flex justify-start gap-2">
@@ -10,25 +15,27 @@
             </fieldset>
             <router-link to="/addclient" class="block  text-s"><el-button  class="border-orange" type='primary' style="width: 200px" >Добавить</el-button></router-link>
         </div>
-        <div class="flex justify-start gap-2 px-10 py-4">
-            <p>Тип</p>
-            <select class="w-3/12 border" v-model="selected">
-                <option value="0">Все типы</option>
-                <option v-for="office in offices" :key="office.id">
-                {{ office.title }}
-                </option>
-            
-            </select>
-        </div>
-        <div class="flex justify-start gap-2 px-10 py-4">
-            <p>Адрес</p>
-            <select class="w-3/12 border" v-model="selected">
-                <option value="0">Все адреса</option>
-                <option v-for="office in offices" :key="office.id">
-                {{ office.title }}
-                </option>
-            
-            </select>
+        <div class="flex justify-start gap-2  w-10/12 my-4 mx-auto">
+            <div class="flex justify-start gap-2 ">
+                <p>Тип</p>
+                <select class="w-40 border rounded-md" v-model="selected">
+                    <option value="0">Все типы</option>
+                    <option v-for="office in offices" :key="office.id">
+                    {{ office.title }}
+                    </option>
+                
+                </select>
+            </div>
+            <div class="flex justify-start gap-2 ">
+                <p>Адрес</p>
+                <select class="w-40 border rounded-md" v-model="selected">
+                    <option value="0">Все адреса</option>
+                    <option v-for="office in offices" :key="office.id">
+                    {{ office.title }}
+                    </option>
+                
+                </select>
+            </div>
         </div>
         <table class=" h-96 mx-auto w-10/12 border my-4 border-gray-600 ">
                 <thead> <!-- Заголовок таблицы -->
@@ -61,7 +68,7 @@
                 </tbody>
             </table>
             <div class="flex justify-start gap-5 mx-auto my-4 w-10/12 " >
-                <router-link to="/editclient"><el-button  class="border-orange" style="width: 200px" >Редактировать</el-button></router-link>
+                <router-link to="/updateobject"><el-button  class="border-orange" style="width: 200px" >Редактировать</el-button></router-link>
                 <el-button @click="top" class="border-orange "  type="danger" style="width: 200px">Удалить</el-button>
             </div>
     </div>
