@@ -4,24 +4,27 @@
         <van-cell-group inset class="w-xl">
             <div class="text-sm flex justify-between gap-8 m-4 border-b">
                 <p>Клиент</p>
-                <select class="w-10/12 h-8 " v-model="selected">
-                    <option >
+                <select class="w-10/12 h-8 " v-model="selected_client">
+                    <option v-for="client in clients " :key="client.id">
+                    {{ client.first_name }} 
                     </option>
                     
                 </select>
             </div>
             <div class="text-sm flex justify-between gap-8 m-4 border-b">
                 <p>Риэлтор</p>
-                <select class="w-10/12 h-8 " v-model="selected">
-                    <option >
+                <select class="w-10/12 h-8 " v-model="selected_agent">
+                    <option v-for="agent in agents " :key="agent.id">
+                    {{ agent.first_name}} 
                     </option>
                     
                 </select>
             </div>
            <div class="text-sm flex justify-between gap-8 m-4 border-b">
                 <p>Объект недвижимости</p>
-                <select class="w-10/12 h-8 " v-model="selected">
-                    <option >
+                <select class="w-10/12 h-8 " v-model="selected_object">
+                    <option v-for="object in objects " :key="object.id">
+                    {{ object.address_city }} {{object.address_street}} {{object.address_house}} {{object.address_number}}
                     </option>
                 </select>
             </div>
@@ -44,5 +47,101 @@
 </template>
 
 <script>
+import { onMounted, computed } from 'vue';
+import { store } from '@/store'
+import { allowMultipleToast, closeToast, showLoadingToast, showNotify } from 'vant'
+import axios from 'axios'
 
+const clients = computed(() => store.state.clients )
+const agents = computed(() => store.state.agents )
+const objects = computed(() => store.state.objects )
+
+export default {
+  setup() {
+    onMounted(() => {
+      allowMultipleToast()
+      closeToast(true)
+      const loadingToast = showLoadingToast({
+        forbidClick: true,
+        duration: 0,
+        message: 'Загрузка...'
+      })
+      axios
+        .get(`http://127.0.0.1:8000/api/clients/`)
+        .then((res) => {
+          console.log(res.data)
+          store.commit('setClients', res.data)
+        })
+        .catch(() => {
+          console.log('12312312312')
+          showNotify({ type: 'danger', message: 'Ошибка' })
+        })
+        .finally(() => {
+            loadingToast.close()
+        })
+    axios
+        .get(`http://127.0.0.1:8000/api/agents/`)
+        .then((res) => {
+          console.log(res.data)
+          store.commit('setAgents', res.data)
+        })
+        .catch(() => {
+          console.log('12312312312')
+          showNotify({ type: 'danger', message: 'Ошибка' })
+        })
+        .finally(() => {
+            loadingToast.close()
+        })
+    axios
+        .get(`http://127.0.0.1:8000/api/objects/`)
+        .then((res) => {
+          console.log(res.data)
+          store.commit('setObjects', res.data)
+        })
+        .catch(() => {
+          console.log('12312312312')
+          showNotify({ type: 'danger', message: 'Ошибка' })
+        })
+        .finally(() => {
+            loadingToast.close()
+        })
+    })
+  },
+data: () => ({
+    selected_client: null,
+    selected_agent:  null,
+    selected_object: null,
+    price: null,
+    clients: clients,
+    objects: objects,
+    agents: agents
+
+
+
+
+    
+  }),
+  props: {
+    source: String
+  },
+  methods:{
+    submit(){
+      
+      axios
+        .post('http://127.0.0.1:8000/api/offers/', {
+           client: this.clients.find(client => client.first_name === this.selected_client).url,
+           agent: this.agents.find(agent => agent.first_name === this.selected_agent).url,
+           real_estate: this.objects.find(object => `${object.address_city} ${object.address_street} ${object.address_house} ${object.address_number}` === this.selected_object).url,
+           price: this.price
+
+
+        })
+        .then(res => console.log(res))
+    },
+    }
+  }
+  
+  
 </script>
+
+

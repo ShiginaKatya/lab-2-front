@@ -9,10 +9,6 @@
                 <router-link to="/deal" class=" text-sm text-blue" >Сделки</router-link>
         </div>
         <div class="flex justify-between gap-2  w-10/12 my-4 mx-auto">
-            <fieldset class="flex justify-start gap-2">
-                <p>Поиск</p>
-                <input class="w-9/12 border rounded-md" type="text">  
-            </fieldset>
             <router-link to="/adddeal" class="block  text-s"><el-button  class="border-orange" type='primary' style="width: 200px" >Добавить</el-button></router-link>
         </div>
         <table class=" h-96 mx-auto w-10/12 border my-4 border-gray-600 ">
@@ -23,20 +19,107 @@
                 </tr>
                 </thead>
                 <tbody class="text-xs"> <!-- Заполнение таблицы -->
-                    <tr @click="choose(user.id)" v-for="user in users" :key="user.id" class="" :style="[user.is_active ? user.role == 'administrator'?{'background': '#adf5a6'}:{'background': '#FFF'}:{'background': '#c96d5b'}]">
-                        <td class=" border-collapse border p-2 h-4">{{user.first_name}}</td> <!-- Номер строки -->
-                        <td class="border-collapse border  p-2">{{user.last_name}}</td> 
-                    </tr>
-                    <tr class=""> <!-- Цикл по строкам -->
-                        <td class="border-collapse border p-2 "></td> <!-- Номер строки -->
-                        <td class="border-collapse border  p-2"> </td> 
+                    <tr @click="choose(deal.url)" v-for="deal in deals" :key="deal.id" class="" :style="getStyle(deal)" >
+                        <td class=" border-collapse border p-2 h-4">Клиент: {{deal.demand.client?.first_name}}, Агент: {{deal.demand.agent?.first_name}}  </td> <!-- Номер строки -->
+                        <td class="border-collapse border  p-2">Клиент: {{deal.supply.client?.first_name}}, Агент: {{deal.supply.agent?.first_name}}, Объект: {{ deal.supply.real_estate?.address_city }} {{deal.supply.real_estate?.address_street}} {{deal.supply.real_estate?.address_house}} {{deal.supply.real_estate?.address_number}}, Цена: {{deal.supply.price}} </td> 
                     </tr>
                 </tbody>
             </table>
             <div class="flex justify-start gap-5 mx-auto my-4 w-10/12 " >
                 <router-link to="/updatedeal"><el-button  class="border-orange" style="width: 200px" >Редактировать</el-button></router-link>
-                <el-button @click="top" class="border-orange "  type="danger" style="width: 200px">Удалить</el-button>
+                <el-button @click="del" class="border-orange "  type="danger" style="width: 200px">Удалить</el-button>
                 <el-button @click="top" class="border-orange "  type="primary" style="width: 200px">Рассчитать</el-button>
+            </div>
+            <div v-if="priceDeal">
+              {{ priceDeal }}
             </div>
     </div>
 </template>
+<script>
+import { ref, onMounted, computed } from 'vue';
+import { store } from '@/store'
+import axios from 'axios'
+import { allowMultipleToast, closeToast, showLoadingToast, showNotify } from 'vant'
+
+const deals = computed(() => store.state.deals )
+
+export default {
+    setup() {
+       onMounted(async () => {
+        console.log(13121312)
+        await axios
+            .get('http://127.0.0.1:8000/api/deals/')
+            .then((res) => {
+            store.commit('setDeals', res.data)
+            console.log(res)
+            })
+            .catch((err) => {
+            console.log(err)
+            showNotify({ type: 'danger', message: 'Ошибка' })
+            }) 
+    },)
+},
+data() {
+    return {
+      deals: deals,
+      selectedDeal: '',
+      priceDeal: null,
+    }
+  },
+ methods:{
+    getStyle(deal) {
+      if (deal.url === this.selectedDeal) {
+        return {'background': 'lightgrey'}
+      }
+    },
+    choose(dealId) {
+      this.priceDeal = null
+      this.selectedDeal = dealId 
+      console.log(dealId)
+      axios
+        .get(`${this.selectedDeal}`)
+        .then((res) => {
+          this.deal = res.data
+          store.commit('setDeal', res.data)
+        })
+        .catch(() => {
+          console.log('12312312312')
+          showNotify({ type: 'danger', message: 'Ошибка' })
+        })
+    },
+    async del(){
+      allowMultipleToast()
+      closeToast(true)
+      const loadingToast = showLoadingToast({
+        forbidClick: true,
+        duration: 0,
+        message: 'Загрузка...'
+      })
+      await axios
+        .delete(`${this.selectedDeal}`)
+        .then((res) => {
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      await axios
+        .get('http://127.0.0.1:8000/api/deals/')
+        .then((res) => {
+          store.commit('setDeals', res.data)
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+        .finally(() => {
+            loadingToast.close()
+        })
+    },
+    top(){
+      this.priceDeal = this.deals.find(deal => deal.url === this.selectedDeal)
+    }
+  
+ }
+  }
+</script>

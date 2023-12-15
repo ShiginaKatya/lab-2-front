@@ -5,43 +5,37 @@
             <div class="text-sm flex justify-between gap-8 m-4 border-b">
                 <p>Tип</p>
                 <select class="w-10/12 h-8 " v-model="selected">
-                    <option >
-                        Земля
+                    <option v-for="type in types " :key="type.id">
+                    {{ type.name }} 
                     </option>
-                    <option >
-                        Дом
-                    </option>
-                    <option >
-                        Квартира
-                    </option>
+                
                 </select>
             </div> 
-             <van-field style=""
-            v-model="city"
+            <van-field style=""
+            v-model="address_city"
             name="city"
             label="Город"
             placeholder=""
             
             />
              <van-field style=""
-            v-model="street"
+            v-model="address_street"
             name="street"
             label="Улица"
             placeholder=""
             />
              <van-field style="" v-if="(selected === 'Дом')|(selected ==='Квартира')"
-            v-model="house"
+            v-model="address_house"
             name="house"
             label="Дом"
             placeholder=""
             />
             <van-field style="" v-if="(selected ==='Квартира')"
-            v-model="number"
+            v-model="address_number"
             name="number"
             label="Номер квартиры"
             placeholder=""
             />
-           
             <van-field style=""
             v-model="latitude"
             name="latitude"
@@ -50,14 +44,14 @@
             
             />
              <van-field style=""
-            v-model="longitude"
+            v-model="logitude"
             name="longitude"
             label="Долгота"
             placeholder=""
             
             />
              <van-field style=""
-            v-model="area"
+            v-model="total_area"
             name="area"
             label="Площадь"
             placeholder=""
@@ -65,7 +59,7 @@
             />
             
              <van-field style="" v-if="(selected === 'Дом')"
-                v-model="floors"
+                v-model="total_floors"
                 name="floors"
                 label="Этажность"
                 placeholder=""
@@ -97,14 +91,68 @@
 </template>
 
 <script>
+
+import { ref, onMounted, computed } from 'vue';
+import { store } from '@/store'
+import axios from 'axios'
+
+const types = computed(() => store.state.types )
+
 export default {
     components:{
   },
-    data() {
-        return {
-       
-        selected: '',
-       
-        }
-    },}
+setup() {
+    onMounted(async () => {
+        console.log(13121312)
+        await axios
+            .get('http://127.0.0.1:8000/api/types/')
+            .then((res) => {
+            store.commit('setTypes', res.data)
+            console.log(res)
+            })
+            .catch((err) => {
+            console.log(err)
+            showNotify({ type: 'danger', message: 'Ошибка' })
+            })})
+},
+  data() {
+    return {
+        types: types,
+        selected: null,
+        address_city: null,
+        address_street: null,
+        address_house: null,
+        address_number: null,
+        latitude: null,
+        logitude: null,
+        total_area: null,
+        total_floors: null,
+        rooms: null,
+        floor: null,
+    }
+  },
+  props: {
+    source: String
+  },
+  methods: {
+    submit() {     
+    //   let officeUrl = this.offices.find(office => office.title === this.selected).url
+      axios
+        .post('http://127.0.0.1:8000/api/objects/', {
+            address_city: this.address_city,
+            address_street: this.address_street,
+            address_house: this.address_house,
+            address_number: this.address_number,
+            latitude: this.latitude,
+            logitude: this.logitude,
+            total_area: this.total_area,
+            total_floors: this.total_floors,
+            rooms: this.rooms,
+            floor: this.floor,
+            type: this.types.find(type => type.name === this.selected).url,
+        })
+        .then(res => console.log(res))
+    },
+  },
+}
 </script>

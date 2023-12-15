@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@vant/touch-emulator": "^1.4.0",
+    "axios": "^1.6.2",
     "element-plus": "^2.4.3",
     "vant": "^4.8.0",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5",
-    "vuetify": "^3.4.3"
+    "vuetify": "^3.4.3",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@vant/auto-import-resolver": "^1.0.2",

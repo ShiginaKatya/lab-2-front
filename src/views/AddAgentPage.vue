@@ -3,26 +3,26 @@
         <van-form class="p-2" @submit="submit">
         <van-cell-group inset class="w-xl">
              <van-field style=""
-            v-model="last_name"
+            v-model="first_name"
             name="lastname"
             label="Фамилия"
             placeholder=""
             
             />
              <van-field style=""
-            v-model="first_name"
+            v-model="middle_name"
             name="firstname"
             label="Имя"
             placeholder=""
             />
              <van-field style=""
-            v-model="middle_name"
+            v-model="last_name"
             name="middlename"
             label="Отчество"
             placeholder=""
             />
             <van-field style=""
-            v-model="share"
+            v-model="deal_share"
             name="share"
             label="Доля от комиссии"
             placeholder=""
@@ -40,4 +40,44 @@
 
 <script>
 
+import { ref, onMounted, computed } from 'vue';
+import { store } from '@/store'
+import axios from 'axios'
+
+
+
+
+export default {
+    components:{
+  },
+setup() {
+    
+},
+  data() {
+    return {
+      
+      first_name: '',
+      middle_name: '',
+      last_name:'',
+      deal_share: ''
+    }
+  },
+  props: {
+    source: String
+  },
+  methods: {
+    submit() {     
+    //   let officeUrl = this.offices.find(office => office.title === this.selected).url
+      axios
+        .post('http://127.0.0.1:8000/api/agents/', {
+            first_name: this.first_name,
+            middle_name: this.middle_name,
+            last_name: this.last_name,
+            deal_share: this.deal_share
+        })
+        .then(res => console.log(res))
+    },
+  },
+}
 </script>
+

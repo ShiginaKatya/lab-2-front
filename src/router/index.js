@@ -18,6 +18,7 @@ import UpdateNeedPage from '../views/UpdateNeedPage.vue'
 import DealPage from '../views/DealPage.vue'
 import AddDealPage from '../views/AddDealPage.vue'
 import UpdateDealPage from '../views/UpdateDealPage.vue'
+import ApproachPage from '../views/ApproachPage.vue'
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -45,6 +46,7 @@ const router = createRouter({
       { path: '/deal', component: DealPage },
       { path: '/adddeal', component: AddDealPage },
       { path: '/updatedeal', component: UpdateDealPage },
+      { path: '/approach', component: ApproachPage },
       
     
     ]})
