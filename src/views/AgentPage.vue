@@ -112,7 +112,7 @@ data() {
           console.log(res.data)
         })
         .catch((err) => {
-          showNotify({ type: 'danger', message: 'Вы не можете его удалитьсука' })
+          showNotify({ type: 'danger', message: 'Запись не может быть удалена, риэлтор связан с предложением/потребностью ' })
           console.log(err)
         })
       await axios

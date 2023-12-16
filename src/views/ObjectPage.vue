@@ -151,6 +151,7 @@ data() {
           console.log(res.data)
         })
         .catch((err) => {
+          showNotify({ type: 'danger', message: 'Запись не может быть удалена, объект недвижимости связан с предложением' })
           console.log(err)
         })
       await axios
@@ -160,6 +161,7 @@ data() {
           console.log(res.data)
         })
         .catch((err) => {
+          
           console.log(err)
         })
         .finally(() => {

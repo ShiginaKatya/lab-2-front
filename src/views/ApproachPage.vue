@@ -1,6 +1,11 @@
 <template>
-<p>Потребности</p>
-    <table class=" h-96 mx-auto w-10/12 border my-4 border-gray-600 ">
+<div class="font-sans mx-auto my-4 pb-4 w-3/4">
+        <div class="border-b-blue border-b p-2">
+                
+            <router-link to="/need" class=" text-sm text-black" >Потребности</router-link>
+            
+        </div>
+    <table class=" mx-auto w-10/12 border my-4 border-gray-600 ">
                 <thead> <!-- Заголовок таблицы -->
                 <tr class="text-xs"> 
                     <th class=" border  border-gray-500 p-2 w-3/12">Клиент</th>
@@ -30,8 +35,12 @@
                     </tr>
                 </tbody>
             </table>
-    <p>Предложения</p>
-    <table class=" h-96 mx-auto w-10/12 border my-4 border-gray-600 ">
+    <div class="border-b-blue border-b p-2">
+                
+            <router-link to="/need" class=" text-sm text-black" >Предложения</router-link>
+            
+        </div>
+    <table class=" mx-auto w-10/12 border my-4 border-gray-600 ">
                 <thead> <!-- Заголовок таблицы -->
                 <tr class="text-xs"> 
                     <th class=" border  border-gray-500 p-2 w-3/12">Клиент</th>
@@ -49,6 +58,7 @@
                     </tr>
                 </tbody>
             </table>
+    </div>
 </template>
 
 <script>

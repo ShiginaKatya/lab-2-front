@@ -30,8 +30,12 @@
                 <el-button @click="del" class="border-orange "  type="danger" style="width: 200px">Удалить</el-button>
                 <el-button @click="top" class="border-orange "  type="primary" style="width: 200px">Рассчитать</el-button>
             </div>
-            <div v-if="priceDeal">
-              {{ priceDeal }}
+            <div class="mx-auto w-4/5" v-if="priceDeal">
+              <p>Стоимость услуг для клиента-продавца - {{priceDeal.seller_price}}</p>
+              <p>Стоимость услуг для клиента-покупателя - {{priceDeal.buyer_price}}</p>
+              <p>Размер отчислений риэлтору клиента-продавца - {{priceDeal.seller_agent_price}}</p>
+              <p>Размер отчислений риэлтору клиента-покупателя - {{priceDeal.buyer_agent_price}}</p>
+              <p>Размер отчислений компании - {{priceDeal.company_price}}</p>
             </div>
     </div>
 </template>

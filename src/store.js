@@ -18,7 +18,8 @@ export const store = createStore({
       deal:[],
       approach_demands:[],
       approach_offers:[],
-
+      select_offers:[],
+      select_needs:[]
     }
   },
   mutations: {
@@ -69,5 +70,11 @@ export const store = createStore({
     },
     setApproachOffers(state, approach_offers) {
       state.approach_offers = approach_offers
+    },
+    setSelectDemands(state, select_demands) {
+      state.select_demands = select_demands
+    },
+    setSelectOffers(state, select_offers) {
+      state.select_offers = select_offers
     },
   }})

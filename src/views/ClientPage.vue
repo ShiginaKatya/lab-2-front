@@ -37,9 +37,14 @@
                     
                 </tbody>
             </table>
-            <div class="flex justify-start gap-5 mx-auto my-4 w-10/12 " >
-                <router-link to="/updateclient"><el-button  class="border-orange" style="width: 200px" >Редактировать</el-button></router-link>
-                <el-button @click="del" class="border-orange "  type="danger" style="width: 200px">Удалить</el-button>
+            <div class=" flex justify-between gap-5 mx-auto my-4 w-10/12" >
+              <div class="flex justify-start gap-5 mx-auto " >
+                  <router-link to="/updateclient"><el-button  class="border-orange" style="width: 200px" >Редактировать</el-button></router-link>
+                  <el-button @click="del" class="border-orange "  type="danger" style="width: 200px">Удалить</el-button>
+              </div>
+              <router-link to="/approach">
+                <el-button @click="view"  class="border-orange" style="width: 200px" >Где участвует</el-button>
+              </router-link>
             </div>
     </div>
 </template>
@@ -110,6 +115,7 @@ data() {
           console.log(res.data)
         })
         .catch((err) => {
+          showNotify({ type: 'danger', message: 'Запись не может быть удалена, клиент связан с потребностью/предложением' })
           console.log(err)
         })
       await axios
@@ -141,7 +147,17 @@ data() {
           console.log(err)
           showNotify({ type: 'danger', message: 'Ошибка' })
         })
+    },
+    async view(){
+      await axios
+        .get(`${this.selectedClient}deals/`)
+        .then(res => {
+          store.commit('setApproachOffers', res.data.offers)
+          store.commit('setApproachDemands', res.data.demands)
+        })
+        .catch(err => console.log(err))
     }
+  
   
  }
   }

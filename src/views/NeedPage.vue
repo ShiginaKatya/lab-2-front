@@ -9,11 +9,7 @@
                 <router-link to="/deal" class=" text-sm text-black" >Сделки</router-link>
         </div>
         <div class="flex justify-between gap-2  w-10/12 my-4 mx-auto">
-            <fieldset class="flex justify-start gap-2">
-                <p>Поиск</p>
-                <input v-model="poisk" class="w-9/12 border rounded-md" type="text"> 
-                <el-button @click="search" class="border-orange "  style="width: 200px">Найти</el-button> 
-            </fieldset>
+            
             <router-link to="/addneed" class="block  text-s"><el-button  class="border-orange" type='primary' style="width: 200px" >Добавить</el-button></router-link>
         </div>
         <table class=" h-96 mx-auto w-10/12 border my-4 border-gray-600 ">
@@ -46,9 +42,14 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="flex justify-start gap-5 mx-auto my-4 w-10/12 " >
-                <router-link to="/updateneed"><el-button  class="border-orange" style="width: 200px" >Редактировать</el-button></router-link>
-                <el-button @click="del" class="border-orange "  type="danger" style="width: 200px">Удалить</el-button>
+            <div class=" flex justify-between gap-5 mx-auto my-4 w-10/12" >
+              <div class="flex justify-start gap-5 mx-auto " >
+                  <router-link to="/updateneed"><el-button  class="border-orange" style="width: 200px" >Редактировать</el-button></router-link>
+                  <el-button @click="del" class="border-orange "  type="danger" style="width: 200px">Удалить</el-button>
+              </div>
+              <router-link to="/selectoffer">
+                <el-button @click="view"   class="border-orange" style="width: 200px" >Подобрать предложения</el-button>
+              </router-link>
             </div>
     </div>
 </template>
@@ -121,7 +122,9 @@ data() {
           console.log(res.data)
         })
         .catch((err) => {
+          showNotify({ type: 'danger', message: 'Запись не может быть удалена, потребность участвует в сделке' })
           console.log(err)
+          
         })
       await axios
         .get('http://127.0.0.1:8000/api/needs/')
@@ -135,6 +138,22 @@ data() {
         .finally(() => {
             loadingToast.close()
         })
+    },
+    async view(){
+      await axios
+        .get(`${this.selectedDemand}approach/`)
+        .then(res => {
+          store.commit('setSelectOffers', res.data)
+          
+        })
+        .catch(err => console.log(err))
+      await axios
+        .get(`${this.selectedDemand}`)
+        .then(res => {
+          store.commit('setDemand', res.data)
+          
+        })
+        .catch(err => console.log(err))
     }
   
  },
