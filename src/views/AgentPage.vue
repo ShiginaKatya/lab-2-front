@@ -1,6 +1,7 @@
 <template>
     <div class="font-sans mx-auto my-4 pb-4 w-3/4">
         <div class="flex justify-between border-b-blue border-b p-2">
+                <img class="w-20" src="logo.png" alt="">
                 <router-link to="/client" class=" text-sm text-black" >Клиенты</router-link>
                 <router-link to="/agent" class=" text-sm text-blue" >Риэлторы</router-link>
                 <router-link to="/object" class=" text-sm text-black" >Объекты недвижимости</router-link>
