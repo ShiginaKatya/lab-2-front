@@ -121,14 +121,15 @@ setup() {
         selected: null,
         address_city: null,
         address_street: null,
-        address_house: null,
-        address_number: null,
+        address_house: '',
+        address_number: '',
         latitude: null,
         logitude: null,
         total_area: null,
         total_floors: null,
-        rooms: null,
-        floor: null,
+        rooms: '',
+        floor: '',
+        type: null
     }
   },
   props: {
